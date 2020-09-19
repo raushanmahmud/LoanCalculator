@@ -131,6 +131,46 @@
                     ));
 
         }
+        
+        /**
+         * @Route("/loan/{id}", name="loan_show")
+         * @Method({"GET"})
+         */
+        public function show($id){            
+            $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
+            
+            $payments = $loan->getPayments()->getValues();
+
+            
+            return $this->render('loans/show.html.twig', array(
+                                    'loan'=> $loan, 
+                                    'payments' => $payments
+
+                            ));
+
+        }
+
+        /**
+         * @Route("/loan/delete/{id}")
+         * @Method({"DELETE"})
+         */
+        public function delete(Request $request, $id){
+            $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $payments = $loan->getPayments();
+            foreach ($payments as $payment){
+                $entityManager->remove($payment);
+            }
+
+            $entityManager->remove($loan);
+            $entityManager->flush();
+
+            $response = new Response();
+            $response->send();
+        }
+
+        
         public function getPaymentScheduleData($startDate, $months, $amount, $yearlyInterestRate) {
             $date = $startDate->format('Y-m-d');
             
@@ -217,45 +257,5 @@
             
             return $data;
         }
-        
-        /**
-         * @Route("/loan/{id}", name="loan_show")
-         * @Method({"GET"})
-         */
-        public function show($id){            
-            $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
-            
-            $payments = $loan->getPayments()->getValues();
-
-            
-            return $this->render('loans/show.html.twig', array(
-                                    'loan'=> $loan, 
-                                    'payments' => $payments
-
-                            ));
-
-        }
-
-        /**
-         * @Route("/loan/delete/{id}")
-         * @Method({"DELETE"})
-         */
-        public function delete(Request $request, $id){
-            $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $payments = $loan->getPayments();
-            foreach ($payments as $payment){
-                $entityManager->remove($payment);
-            }
-
-            $entityManager->remove($loan);
-            $entityManager->flush();
-
-            $response = new Response();
-            $response->send();
-        }
-
-        
-        
+           
     }
