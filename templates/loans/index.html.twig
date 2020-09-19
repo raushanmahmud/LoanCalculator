@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} LoanCalculator {% endblock %}
+
+{% block body %}
+    {% if loans %}
+        <table id="loans" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Loan ID</th>
+                    <th>Loan Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                    <tr>
+                        <td><a href="/loan/{{loan.id}}">{{loan.id}}</a></td>
+                        <td>{{loan.title}}</td>
+                        <td> 
+                            <a href="/loan/{{loan.id}}" class="btn btn-dark">Show</a> 
+                            <a href="#" class="btn btn-danger delete-loan" data-id="{{  loan.id }}">Delete</a>                         
+                        
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No loans to display.</p>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/main.js"></script>
+{% endblock %}
