@@ -1,6 +1,6 @@
 # LoanCalculator
 
-> A basic loan calculator using Symfony 4.4.13
+> A basic loan calculator using Symfony 4.4
 
 ## Quick Start
 
