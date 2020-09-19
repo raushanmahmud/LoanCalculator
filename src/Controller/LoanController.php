@@ -118,11 +118,14 @@
                         }
                         $entityManager->flush();
 
+                        $this->redirect('/loan/'.$loan->getId());
+
                         return $this->render('loans/show.html.twig', array(
                             'loan'=> $loan, 
                             'payments' => $payments
 
                         ));
+                        
                         
                     }
 
@@ -138,10 +141,17 @@
          */
         public function show($id){            
             $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
-            
-            $payments = $loan->getPayments()->getValues();
 
-            
+            if (!$loan) {
+                return $this->redirect('/_error/404');
+            }
+
+            $payments = $loan->getPayments();
+
+            if ($payments){
+                $payments = $payments->getValues();
+            }
+
             return $this->render('loans/show.html.twig', array(
                                     'loan'=> $loan, 
                                     'payments' => $payments

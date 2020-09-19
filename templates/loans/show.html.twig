@@ -13,17 +13,17 @@
     <hr>
     <p>
         <ul>
-            <li>Amount: <b>{{ loan.amount|round(2) }}</b></li>
+            <li>Loan Amount: <b>{{ loan.amount|round(2) }} KZT</b></li>
             <li>Months: <b>{{ loan.months }}</b></li>
-            <li>Yearly Interest Rate: <b>{{ loan.yearlyInterestRate }}</b></li>
+            <li>Yearly Interest Rate: <b>{{ loan.yearlyInterestRate }} %</b></li>
 
         </ul>
     </p>
     <a href="/">Go back</a>
     
     <hr>
-    
-    <table id="payments" class="table table-responsive table-striped">
+    {% if payments %}                    
+        <table id="payments" class="table table-responsive table-striped">
             <thead >
                 <tr>
                     <th class="align-middle">Month Number</th>
@@ -33,22 +33,26 @@
                     <th class="align-middle">Interest Pay</th>
                     <th class="align-middle">Base Pay</th>
                     <th class="align-middle cell-breakWord">Remaining base amount after pay</p>
-                    
+                            
                 </tr>
             </thead>
             <tbody>
                 {% for payment in payments %}
                     <tr>
-                        <td>{{ 1 }}</td>
+                        <td>{{ loop.index0 + 1 }}</td>
                         <td>{{ payment.id }}</td>
                         <td>{{ payment.scheduledDate|date('d-m-Y') }}</td>
                         <td>{{ payment.fullAmountForPay|round(3) }}</td>
                         <td>{{ payment.interestAmountForPay|round(3) }}</td>
                         <td>{{ payment.baseAmountForPay|round(3) }}</td>
                         <td>{{ payment.remainingBaseAmountAfterPay|round(3)}}</d>
-                    
+                                
                     </tr>
                 {% endfor %}
+                        
             </tbody>
         </table>
+    {% else %}
+        No payment info to display.
+    {% endif %}
 {% endblock %}
