@@ -40,16 +40,19 @@
             $loan = new Loan();
 
             $form = $this->createFormBuilder($loan)
-                    ->add('title', TextType::class, array('attr'=>array(
+                    ->add('title', TextType::class, array('label'=>'Название кредита', 
+                    'attr'=>array(                        
                         'class' => 'form-control'
                     )))
                     ->add('body', TextareaType::class, array(
+                        'label'=>'Описание',
                         'required'=>false,
                         'attr'=>array('class' => 'form-control mb-3'
                     )))
                     ->add('startDate', DateType::class, [
+                        'label'=>'Начальная дата(день, месяц, год)',
                         'widget' => 'choice',
-                        'format' => 'yyyy-MM-dd',
+                        'format' => 'dd-MM-yyyy',
                         // prevents rendering it as type="date", to avoid HTML5 date pickers
                         'html5' => false,
                     
@@ -57,21 +60,23 @@
                         'attr' => ['class' => 'js-datepicker mb-3'],
                     ])
                     ->add('amount', MoneyType::class, [
-                        'label'=>'Amount in ',
+                        'label'=>'Сумма займа в: ',
                         'currency' => 'KZT',
                         'attr'=>array('class' => 'form-control mb-3'
                         
                     )])
                     ->add('months', IntegerType::class, [
+                        'label'=>'Срок займа(в месяцах)',
                         'attr' => ['class' => 'form-control tinymce mb-3'],
                     ])
                     ->add('yearlyInterestRate', PercentType::class, [
+                        'label'=>'Годовая процентная ставка',
                         'type'=>'integer',
                         'attr'=>array('class' => 'form-control'
                         
                     )])
                     ->add('save', SubmitType::class, array(
-                        'label'=>'Create',
+                        'label'=>'Создать',
                         'attr'=>array('class' => 'btn btn-primary mt-3'
                     )))
                     ->getForm();
@@ -92,8 +97,7 @@
                         $myData = $this->getPaymentScheduleData($myDate, $myMonths, $myAmount, $myYearlyInterestRate);
                         
                         $data = $myData;
-                        $payments = array();
-
+                        
                         for ($i=0; $i<$myMonths; $i=$i+1){
                             $monthlyPaymentAmountForPay = $data['monthlyPaymentAmountsForPay'][$i];
                             $monthlyInterestAmountForPay = $data['monthlyInterestAmountsForPay'][$i];
@@ -109,22 +113,19 @@
                             $payment->setRemainingBaseAmountBeforePay($remainingBaseAmountBeforePay);
                             $payment->setRemainingBaseAmountAfterPay($remainingBaseAmountAfterPay);
                             $payment->setScheduledDate($scheduledDate);
-
+                            
                             $loan->addPayment($payment);
                             $entityManager->persist($payment);
                             $entityManager->persist($loan);
                             
-                            $payments[] = $payment;
+                            
                         }
                         $entityManager->flush();
 
-                        $this->redirect('/loan/'.$loan->getId());
+                        
+                        return $this->redirect("/loan/".$loan->getId());
 
-                        return $this->render('loans/show.html.twig', array(
-                            'loan'=> $loan, 
-                            'payments' => $payments
-
-                        ));
+                        
                         
                         
                     }

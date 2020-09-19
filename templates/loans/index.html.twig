@@ -7,9 +7,9 @@
         <table id="loans" class="table table-striped">
             <thead>
                 <tr>
-                    <th>Loan ID</th>
-                    <th>Loan Title</th>
-                    <th>Actions</th>
+                    <th>ID Кредита</th>
+                    <th>Название Кредита</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,8 +18,8 @@
                         <td><a href="/loan/{{loan.id}}">{{loan.id}}</a></td>
                         <td>{{loan.title}}</td>
                         <td> 
-                            <a href="/loan/{{loan.id}}" class="btn btn-dark">Show</a> 
-                            <a href="#" class="btn btn-danger delete-loan" data-id="{{  loan.id }}">Delete</a>                         
+                            <a href="/loan/{{loan.id}}" class="btn btn-dark">Показать график</a> 
+                            <a href="#" class="btn btn-danger delete-loan" data-id="{{  loan.id }}">Удалить</a>                         
                         
                         </td>
                     </tr>

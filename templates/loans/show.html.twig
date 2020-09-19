@@ -3,43 +3,54 @@
 {% block title %} {{ loan.title }} {% endblock %}
 
 {% block body %}
-    <h1>Title: {{ loan.title }}</h1>
+    <h1>Название кредита: {{ loan.title }}</h1>
     <h2>ID: <b>{{ loan.id }}</b></h2>
-    <h3>Start Date: <b>{{ loan.startDate|date('Y-m-d') }}</b></h3>
-    <p> Description:<br>
+    <h3>Начальная дата: <b>{{ loan.startDate|date('d-m-Y') }}</b></h3>
+    <p> Описание:<br>
         {{ loan.body }}
     </p>
 
     <hr>
     <p>
         <ul>
-            <li>Loan Amount: <b>{{ loan.amount|round(2) }} KZT</b></li>
-            <li>Months: <b>{{ loan.months }}</b></li>
-            <li>Yearly Interest Rate: <b>{{ loan.yearlyInterestRate }} %</b></li>
+            <li>Сумма займа: <b>{{ loan.amount|round(2) }} KZT</b></li>
+            <li>Срок займа(в месяцах): <b>{{ loan.months }}</b></li>
+            <li>Годовая процентная ставка: <b>{{ loan.yearlyInterestRate }} %</b></li>
 
         </ul>
     </p>
-    <a href="/">Go back</a>
+    <a href="/">Назад</a>
     
     <hr>
-    {% if payments %}                    
+    {% if payments %}      
+        <h3>График платежей:</h3>              
         <table id="payments" class="table table-responsive table-striped">
             <thead >
                 <tr>
-                    <th class="align-middle">Month Number</th>
-                    <th class="align-middle">Payment ID</th>
-                    <th class="align-middle">Scheduled Payment Date</th>
-                    <th class="align-middle">Monthly Payment Amount</th>
-                    <th class="align-middle">Interest Pay</th>
-                    <th class="align-middle">Base Pay</th>
-                    <th class="align-middle cell-breakWord">Remaining base amount after pay</p>
+                    <th class="align-middle">Месяц</th>
+                    <th class="align-middle">ID платежа</th>
+                    <th class="align-middle">Дата</th>
+                    <th class="align-middle">Общая сумма платежа</th>
+                    <th class="align-middle">В погашение процентов</th>
+                    <th class="align-middle">В погашение долга</th>
+                    <th class="align-middle cell-breakWord">Остаток (после платежа)</p>
                             
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                        <td>0-месяц</td>
+                        <td>-</td>
+                        <td>{{ loan.startDate|date('d-m-Y') }}</td>
+                        <td>{{ 0 }}</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>{{ loan.amount|round(3) }}</d>
+                                
+                </tr>
                 {% for payment in payments %}
                     <tr>
-                        <td>{{ loop.index0 + 1 }}</td>
+                        <td>{{ loop.index0 + 1 }}-месяц</td>
                         <td>{{ payment.id }}</td>
                         <td>{{ payment.scheduledDate|date('d-m-Y') }}</td>
                         <td>{{ payment.fullAmountForPay|round(3) }}</td>
