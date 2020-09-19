@@ -8,11 +8,9 @@
 # Clone the git repository
 git clone https://github.com/raushanmahmud/LoanCalculator.git
 
-``` bash
 # cd into the application root folder
 cd LoanCalculator
 
-``` bash
 # Install dependencies
 composer install
 
