@@ -1,7 +1,9 @@
+<h1>LoanCalculator using Symfony 4</h1>
+
 # clone the git repository
 git clone https://github.com/raushanmahmud/LoanCalculator.git
 
-# ccd into the application root folder
+# cd into the application root folder
 cd LoanCalculator
 
 # Install dependencies
