@@ -1,11 +1,18 @@
-<h1>LoanCalculator using Symfony 4</h1>
+# LoanCalculator
 
-# clone the git repository
+> A basic loan calculator using Symfony 4"
+
+## Quick Start
+
+``` bash
+# Clone the git repository
 git clone https://github.com/raushanmahmud/LoanCalculator.git
 
+``` bash
 # cd into the application root folder
 cd LoanCalculator
 
+``` bash
 # Install dependencies
 composer install
 
@@ -18,5 +25,17 @@ php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate
 
 
-# To run the application, run php server as below
+# To run the application, run the php built in server as below
 php -S 127.0.0.1:8000 -t public
+
+```
+
+## App Info
+
+### Author
+
+Raushan Yergozhiyeva
+
+### Version
+
+1.0.0
