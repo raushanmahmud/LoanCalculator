@@ -83,8 +83,7 @@
 
                         $entityManager = $this->getDoctrine()->getManager();
                         $entityManager->persist($loan);
-                        $entityManager->flush();
-
+                        
                         $myDate = $loan->getStartDate();
                         $myMonths = $loan->getMonths();
                         $myAmount = $loan->getAmount();
@@ -93,6 +92,7 @@
                         $myData = $this->getPaymentScheduleData($myDate, $myMonths, $myAmount, $myYearlyInterestRate);
                         
                         $data = $myData;
+                        $payments = array();
 
                         for ($i=0; $i<$myMonths; $i=$i+1){
                             $monthlyPaymentAmountForPay = $data['monthlyPaymentAmountsForPay'][$i];
@@ -110,15 +110,20 @@
                             $payment->setRemainingBaseAmountAfterPay($remainingBaseAmountAfterPay);
                             $payment->setScheduledDate($scheduledDate);
 
-                            $payment->setLoan($loan);
-
-                            $entityManager = $this->getDoctrine()->getManager();
-                            
+                            $loan->addPayment($payment);
                             $entityManager->persist($payment);
-                            $entityManager->flush();
+                            $entityManager->persist($loan);
+                            
+                            $payments[] = $payment;
                         }
+                        $entityManager->flush();
 
-                        return $this->redirectToRoute('loan_show', array('id'=>$loan->getId())) ;
+                        return $this->render('loans/show.html.twig', array(
+                            'loan'=> $loan, 
+                            'payments' => $payments
+
+                        ));
+                        
                     }
 
                     return $this->render('loans/new.html.twig', array(
@@ -238,6 +243,12 @@
         public function delete(Request $request, $id){
             $loan = $this->getDoctrine()->getRepository(Loan::class)->find($id);
             $entityManager = $this->getDoctrine()->getManager();
+
+            $payments = $loan->getPayments();
+            foreach ($payments as $payment){
+                $entityManager->remove($payment);
+            }
+
             $entityManager->remove($loan);
             $entityManager->flush();
 
@@ -247,21 +258,4 @@
 
         
         
-        
-        // /**
-        //  * @Route("/article/save")
-        //  */
-        // public function save(){
-        //     $entityManager = $this->getDoctrine()->getManager();
-            
-        //     $article = new Article();
-        //     $article->setTitle('Test article');
-        //     $article->setBody('kshfdkjsfjsk jsdfhkjs');
-
-        //     $entityManager->persist($article);
-            
-        //     $entityManager->flush();
-
-        //     return new Response('Saved an article with the id of ' . $article->getId());
-        // }
     }
