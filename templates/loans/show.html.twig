@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Название кредита: {{ loan.title }}</h1>
     <h2>ID: <b>{{ loan.id }}</b></h2>
-    <h3>Начальная дата: <b>{{ loan.startDate|date('d-m-Y') }}</b></h3>
+    <h3>Начальная дата: <b>{{ loan.startDate|date('d.m.Y') }}</b></h3>
     <p> Описание:<br>
         {{ loan.body }}
     </p>
@@ -41,7 +41,7 @@
                 <tr>
                         <td>0-месяц</td>
                         <td>-</td>
-                        <td>{{ loan.startDate|date('d-m-Y') }}</td>
+                        <td>{{ loan.startDate|date('d.m.Y') }}</td>
                         <td>{{ 0 }}</td>
                         <td>0</td>
                         <td>0</td>
@@ -52,7 +52,7 @@
                     <tr>
                         <td>{{ loop.index0 + 1 }}-месяц</td>
                         <td>{{ payment.id }}</td>
-                        <td>{{ payment.scheduledDate|date('d-m-Y') }}</td>
+                        <td>{{ payment.scheduledDate|date('d.m.Y') }}</td>
                         <td>{{ payment.fullAmountForPay|round(3) }}</td>
                         <td>{{ payment.interestAmountForPay|round(3) }}</td>
                         <td>{{ payment.baseAmountForPay|round(3) }}</td>
