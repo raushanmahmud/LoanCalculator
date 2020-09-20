@@ -26,6 +26,7 @@ php bin/console doctrine:migrations:migrate
 # To run the application, run the php built in server as below
 php -S 127.0.0.1:8000 -t public
 
+# Go to http://localhost:8000 on your web browser, the application must be available
 ```
 
 ## App Info
